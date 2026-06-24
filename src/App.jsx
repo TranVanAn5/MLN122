@@ -72,6 +72,8 @@ const ROUNDS = [
       {
         text: "Thu nhập của người chạy xe công nghệ phản ánh điều gì?",
         context: "Tình huống: Sinh viên chạy Grab để có thêm thu nhập.",
+        image: "/images/grab-driver.jpg",
+        imageAlt: "Tài xế xe ôm công nghệ Grab đang chở khách trên đường",
         answers: [
           "Lợi nhuận thương nghiệp thuần túy.",
           "Quan hệ phân chia giá trị giữa nền tảng giữ phần trăm hoa hồng và người lao động trực tiếp.",
@@ -768,14 +770,22 @@ function App() {
             </button>
           </div>
 
-          <div className="question-display" key={`${roundIndex}-${questionIndex}`}>
-            <div className="question-meta">
-              <span>CÂU HỎI {String(questionIndex + 1).padStart(2, "0")}</span>
-              <i />
-              <small>05</small>
+          <div className={`question-display ${question.image ? "with-image" : ""}`} key={`${roundIndex}-${questionIndex}`}>
+            {question.image && (
+              <figure className="question-illustration">
+                <img src={question.image} alt={question.imageAlt} />
+                <figcaption>MINH HỌA TÌNH HUỐNG</figcaption>
+              </figure>
+            )}
+            <div className="question-copy">
+              <div className="question-meta">
+                <span>CÂU HỎI {String(questionIndex + 1).padStart(2, "0")}</span>
+                <i />
+                <small>05</small>
+              </div>
+              {question.context && <div className="case-context">{question.context}</div>}
+              <h1>{question.text}</h1>
             </div>
-            {question.context && <div className="case-context">{question.context}</div>}
-            <h1>{question.text}</h1>
           </div>
 
           <div className="answer-options">
