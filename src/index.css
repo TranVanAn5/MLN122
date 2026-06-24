@@ -224,7 +224,7 @@ svg { width: 100%; height: 100%; }
   display: flex;
   flex-direction: column;
 }
-.round-context { min-height: 62px; display: flex; justify-content: space-between; align-items: flex-start; }
+.round-context { min-height: 50px; display: flex; justify-content: space-between; align-items: flex-start; }
 .round-context > div:first-child { display: flex; flex-direction: column; gap: 4px; }
 .round-context > div:first-child span { color: var(--accent); font-size: 8px; font-weight: 800; letter-spacing: .18em; }
 .round-context > div:first-child strong { font: 600 16px "Space Grotesk"; letter-spacing: .07em; }
@@ -236,10 +236,61 @@ svg { width: 100%; height: 100%; }
 .question-progress button:hover { transform: translateY(-2px); color: #fff; }
 .question-progress button.active { border-color: var(--accent); color: #fff; background: color-mix(in srgb, var(--accent) 18%, #121936); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 30%, transparent); animation: activeDot 1.8s ease-in-out infinite; }
 .question-progress button.passed { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.question-timer {
+  width: min(480px, 100%);
+  min-height: 70px;
+  margin: 0 auto 15px;
+  padding: 7px 9px 7px 7px;
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(128, 145, 211, .2);
+  border-radius: 40px;
+  background: linear-gradient(100deg, rgba(21, 30, 70, .82), rgba(10, 13, 37, .9));
+  box-shadow: inset 0 1px rgba(255,255,255,.04), 0 12px 30px rgba(0,0,0,.16);
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+}
+.question-timer.running {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: inset 0 1px rgba(255,255,255,.05), 0 12px 32px rgba(0,0,0,.2), 0 0 18px color-mix(in srgb, var(--accent) 9%, transparent);
+}
+.timer-dial { position: relative; width: 56px; height: 56px; }
+.timer-dial svg { transform: rotate(-90deg); }
+.timer-dial circle { fill: rgba(5, 9, 27, .72); stroke-width: 3; }
+.timer-base { stroke: rgba(255,255,255,.08); }
+.timer-value {
+  stroke: var(--accent);
+  stroke-dasharray: 194.78;
+  stroke-linecap: round;
+  transition: stroke-dashoffset .75s linear, stroke .25s;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 50%, transparent));
+}
+.timer-dial > div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.timer-dial strong { font: 700 18px/1 "Space Grotesk"; }
+.timer-dial span { margin-top: 2px; color: #706c82; font-size: 5px; font-weight: 800; letter-spacing: .12em; }
+.timer-copy { display: flex; flex-direction: column; gap: 3px; }
+.timer-copy span { color: #66637a; font-size: 6px; font-weight: 800; letter-spacing: .14em; }
+.timer-copy strong { color: #b4b0c5; font-size: 9px; }
+.timer-main-button {
+  height: 35px; padding: 0 13px; display: flex; align-items: center; gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 11%, #17183e);
+  color: var(--accent); font-size: 7px; font-weight: 800; letter-spacing: .1em; cursor: pointer; transition: .22s;
+}
+.timer-main-button svg { width: 12px; height: 12px; }
+.timer-main-button:hover { color: #fff; border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 7px 18px rgba(0,0,0,.2); }
+.question-timer.danger { border-color: rgba(255, 72, 110, .55); animation: timerDanger .65s ease-in-out infinite alternate; }
+.question-timer.danger .timer-value { stroke: #ff486e; }
+.question-timer.danger .timer-dial strong { color: #ff7893; }
+.question-timer.danger .timer-copy strong { color: #ff7893; }
+@keyframes timerDanger {
+  to { box-shadow: 0 0 25px rgba(255, 54, 96, .2), inset 0 1px rgba(255,255,255,.04); transform: scale(1.01); }
+}
 .question-display {
   position: relative;
-  min-height: clamp(205px, 28vh, 250px);
-  padding: 38px clamp(35px, 5vw, 75px);
+  min-height: clamp(180px, 23vh, 215px);
+  padding: 32px clamp(35px, 5vw, 75px);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   border: 1px solid color-mix(in srgb, var(--accent) 29%, transparent);
   background:
@@ -265,7 +316,7 @@ svg { width: 100%; height: 100%; }
 }
 .static-answer {
   position: relative;
-  min-height: clamp(74px, 10.5vh, 88px);
+  min-height: clamp(70px, 9.5vh, 82px);
   padding: 13px 27px 13px 19px;
   display: flex; align-items: center; gap: 16px;
   border: 1px solid rgba(126, 132, 195, .3); border-radius: 3px;
@@ -589,6 +640,8 @@ svg { width: 100%; height: 100%; }
   .header-tools { position: absolute; right: 67px; top: 29px; }
   .round-tabs { grid-column: 1 / -1; order: 3; height: 38px; }
   .round-tabs button { min-width: 0; flex: 1; }
+  .question-timer { grid-template-columns: 54px 1fr auto; gap: 8px; }
+  .timer-copy { display: none; }
   .question-layout.has-ladder { display: flex; flex-direction: column; }
   .question-stage { padding: 20px 16px; }
   .final-ladder { min-height: 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.07); }
@@ -613,6 +666,9 @@ svg { width: 100%; height: 100%; }
   .rules-link-button { margin-left: auto; margin-right: auto; }
   .round-context { height: 75px; flex-direction: column; }
   .question-progress { align-self: flex-end; margin-top: -32px; }
+  .question-timer { margin-top: 3px; grid-template-columns: 50px 1fr; }
+  .timer-main-button { justify-content: center; }
+  .timer-main-button svg { display: none; }
   .question-display h1 { font-size: 17px; }
   .static-answer { min-height: 61px; }
   .static-answer p { font-size: 12px; }

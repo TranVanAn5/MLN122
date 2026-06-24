@@ -187,6 +187,8 @@ function Icon({ name }) {
     mute: <><path d="M11 5 6 9H2v6h4l5 4V5Z" /><path d="m16 9 5 6m0-6-5 6" /></>,
     flag: <><path d="M5 21V4" /><path d="M5 4h12l-2 4 2 4H5" /></>,
     book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /><path d="M8 7h8M8 11h6" /></>,
+    play: <path d="m8 5 11 7-11 7V5Z" />,
+    pause: <><path d="M8 5v14M16 5v14" /></>,
   };
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{icons[name]}</svg>;
 }
@@ -219,6 +221,7 @@ function useArenaAudio(enabled) {
   const musicTimerRef = useRef(null);
   const musicStepRef = useRef(0);
   const musicModeRef = useRef(null);
+  const gameMusicRef = useRef(null);
 
   const context = useCallback(() => {
     if (!contextRef.current) {
@@ -250,17 +253,40 @@ function useArenaAudio(enabled) {
   const stopMusic = useCallback(() => {
     if (musicTimerRef.current) clearInterval(musicTimerRef.current);
     musicTimerRef.current = null;
+    if (gameMusicRef.current) {
+      gameMusicRef.current.pause();
+      gameMusicRef.current.currentTime = 0;
+    }
     musicModeRef.current = null;
   }, []);
 
   const startMusic = useCallback(() => {
     if (!enabled) return;
-    if (musicTimerRef.current && musicModeRef.current === "game") {
+    if (musicModeRef.current === "game" && gameMusicRef.current && !gameMusicRef.current.paused) {
       context();
       return;
     }
     stopMusic();
     musicModeRef.current = "game";
+    context();
+    if (!gameMusicRef.current) {
+      gameMusicRef.current = new Audio("/audio/millionaire-question.wav");
+      gameMusicRef.current.loop = true;
+      gameMusicRef.current.preload = "auto";
+    }
+    gameMusicRef.current.volume = .32;
+    gameMusicRef.current.currentTime = 0;
+    gameMusicRef.current.play().catch(() => {});
+  }, [context, enabled, stopMusic]);
+
+  const startHomeMusic = useCallback(() => {
+    if (!enabled) return;
+    if (musicTimerRef.current && musicModeRef.current === "home") {
+      context();
+      return;
+    }
+    stopMusic();
+    musicModeRef.current = "home";
     context();
     const notes = [220, 277.18, 329.63, 440, 246.94, 311.13, 369.99, 493.88];
     const bass = [110, 110, 123.47, 123.47, 138.59, 138.59, 123.47, 164.81];
@@ -279,28 +305,6 @@ function useArenaAudio(enabled) {
     };
     playStep();
     musicTimerRef.current = setInterval(playStep, 420);
-  }, [context, enabled, stopMusic, tone]);
-
-  const startHomeMusic = useCallback(() => {
-    if (!enabled) return;
-    if (musicTimerRef.current && musicModeRef.current === "home") {
-      context();
-      return;
-    }
-    stopMusic();
-    musicModeRef.current = "home";
-    context();
-    const melody = [261.63, 329.63, 392, 329.63, 293.66, 349.23, 440, 349.23];
-    const harmony = [130.81, 164.81, 196, 164.81, 146.83, 174.61, 220, 174.61];
-    const playPhrase = () => {
-      const step = musicStepRef.current % melody.length;
-      tone(melody[step], 1.6, 0, "sine", .015);
-      tone(harmony[step], 2.2, 0, "triangle", .011);
-      if (step === 2 || step === 6) tone(melody[step] * 1.5, 1.1, .35, "sine", .006);
-      musicStepRef.current += 1;
-    };
-    playPhrase();
-    musicTimerRef.current = setInterval(playPhrase, 1800);
   }, [context, enabled, stopMusic, tone]);
 
   useEffect(() => {
@@ -344,6 +348,8 @@ function App() {
   const [answerResolved, setAnswerResolved] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
   const [result, setResult] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [timerRunning, setTimerRunning] = useState(false);
   const resultTimerRef = useRef(null);
   const resultSoundPlayedRef = useRef(false);
   const audio = useArenaAudio(soundOn);
@@ -358,6 +364,8 @@ function App() {
     setQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswerResolved(false);
+    setTimeLeft(30);
+    setTimerRunning(false);
     setResult(null);
     resultSoundPlayedRef.current = false;
     setView("round");
@@ -370,6 +378,8 @@ function App() {
       setQuestionIndex(next);
       setSelectedAnswer(null);
       setAnswerResolved(false);
+      setTimeLeft(30);
+      setTimerRunning(false);
     }
   };
 
@@ -378,10 +388,13 @@ function App() {
     setQuestionIndex(index);
     setSelectedAnswer(null);
     setAnswerResolved(false);
+    setTimeLeft(30);
+    setTimerRunning(false);
   };
 
   const selectAnswer = (index) => {
     if (answerResolved) return;
+    setTimerRunning(false);
     audio.click();
     setSelectedAnswer(index);
     setAnswerResolved(true);
@@ -448,6 +461,23 @@ function App() {
   useEffect(() => () => {
     if (resultTimerRef.current) clearTimeout(resultTimerRef.current);
   }, []);
+
+  useEffect(() => {
+    if (!timerRunning || view !== "round") return undefined;
+    if (timeLeft <= 0) {
+      setTimerRunning(false);
+      audio.wrong();
+      return undefined;
+    }
+    const timer = setTimeout(() => setTimeLeft((time) => time - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timerRunning, timeLeft, view]);
+
+  const toggleTimer = () => {
+    audio.click();
+    if (timeLeft === 0) setTimeLeft(30);
+    setTimerRunning((running) => !running);
+  };
 
   useEffect(() => {
     if (soundOn && view === "round") audio.startMusic();
@@ -712,6 +742,30 @@ function App() {
                 </button>
               ))}
             </div>
+          </div>
+
+          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 5 ? "danger" : ""}`}>
+            <div className="timer-dial">
+              <svg viewBox="0 0 72 72">
+                <circle className="timer-base" cx="36" cy="36" r="31" />
+                <circle
+                  className="timer-value"
+                  cx="36"
+                  cy="36"
+                  r="31"
+                  style={{ strokeDashoffset: 194.78 * (1 - timeLeft / 30) }}
+                />
+              </svg>
+              <div><strong>{timeLeft}</strong><span>GIÂY</span></div>
+            </div>
+            <div className="timer-copy">
+              <span>THỜI GIAN TRẢ LỜI</span>
+              <strong>{timerRunning ? "Đang đếm ngược" : timeLeft === 0 ? "Hết giờ" : "Sẵn sàng"}</strong>
+            </div>
+            <button className="timer-main-button" onClick={toggleTimer}>
+              <Icon name={timerRunning ? "pause" : "play"} />
+              {timerRunning ? "TẠM DỪNG" : timeLeft === 30 ? "BẮT ĐẦU" : "TIẾP TỤC"}
+            </button>
           </div>
 
           <div className="question-display" key={`${roundIndex}-${questionIndex}`}>
