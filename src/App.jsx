@@ -115,6 +115,7 @@ const ROUNDS = [
       {
         text: "Hãy sắp xếp đúng trình tự “Quy trình giăng bẫy bóc lột” của các nhà tư bản nền tảng.",
         context: "(1) Hạ rào cản gia nhập; (2) Ép lao động tự bóc lột; (3) Thâu tóm thuật toán lõi; (4) Đơn phương đổi chính sách.",
+        contextBelow: true,
         answers: [
           "(1) → (3) → (4) → (2).",
           "(3) → (4) → (1) → (2).",
@@ -215,6 +216,7 @@ const FINAL_LEVELS = [
 
 const FINAL_QUESTION_POINTS = ["1.000.000", "2.000.000", "3.500.000", "5.000.000", "10.000.000"];
 const LETTERS = ["A", "B", "C", "D"];
+const TIMER_DURATION = 10;
 
 function Icon({ name }) {
   const icons = {
@@ -229,6 +231,9 @@ function Icon({ name }) {
     book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /><path d="M8 7h8M8 11h6" /></>,
     play: <path d="m8 5 11 7-11 7V5Z" />,
     pause: <><path d="M8 5v14M16 5v14" /></>,
+    phone: <path d="M21 16.4v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 1.1 3.7 2 2 0 0 1 3.1 1.5h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L7.1 9.5a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c1 .4 2 .6 3 .7a2 2 0 0 1 1.5 1.9Z" />,
+    users: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" /></>,
+    close: <path d="m6 6 12 12M18 6 6 18" />,
   };
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{icons[name]}</svg>;
 }
@@ -399,10 +404,13 @@ function App() {
   const [answerResolved, setAnswerResolved] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
   const [result, setResult] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [timerRunning, setTimerRunning] = useState(false);
   const [bonusIndex, setBonusIndex] = useState(0);
   const [bonusReturnRound, setBonusReturnRound] = useState(1);
+  const [lifelines, setLifelines] = useState({ fifty: true, audience: true, phone: true });
+  const [hiddenAnswers, setHiddenAnswers] = useState([]);
+  const [externalHelpModal, setExternalHelpModal] = useState(null);
   const resultTimerRef = useRef(null);
   const resultSoundPlayedRef = useRef(false);
   const audio = useArenaAudio(soundOn);
@@ -418,8 +426,11 @@ function App() {
     setQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswerResolved(false);
-    setTimeLeft(30);
+    setTimeLeft(TIMER_DURATION);
     setTimerRunning(false);
+    setHiddenAnswers([]);
+    setExternalHelpModal(null);
+    if (index === 2) setLifelines({ fifty: true, audience: true, phone: true });
     setResult(null);
     resultSoundPlayedRef.current = false;
     setView("round");
@@ -432,8 +443,10 @@ function App() {
       setQuestionIndex(next);
       setSelectedAnswer(null);
       setAnswerResolved(false);
-      setTimeLeft(30);
+      setTimeLeft(TIMER_DURATION);
       setTimerRunning(false);
+      setHiddenAnswers([]);
+      setExternalHelpModal(null);
     }
   };
 
@@ -442,12 +455,13 @@ function App() {
     setQuestionIndex(index);
     setSelectedAnswer(null);
     setAnswerResolved(false);
-    setTimeLeft(30);
+    setTimeLeft(TIMER_DURATION);
     setTimerRunning(false);
+    setHiddenAnswers([]);
   };
 
   const selectAnswer = (index) => {
-    if (answerResolved) return;
+    if (answerResolved || timeLeft === 0) return;
     setTimerRunning(false);
     audio.click();
     setSelectedAnswer(index);
@@ -509,13 +523,13 @@ function App() {
     resultSoundPlayedRef.current = false;
     setSelectedAnswer(null);
     setAnswerResolved(false);
-    setTimeLeft(30);
+    setTimeLeft(TIMER_DURATION);
     setTimerRunning(false);
     setView("bonus");
   };
 
   const selectBonusAnswer = (index) => {
-    if (answerResolved) return;
+    if (answerResolved || timeLeft === 0) return;
     audio.click();
     setTimerRunning(false);
     setSelectedAnswer(index);
@@ -558,8 +572,45 @@ function App() {
 
   const toggleTimer = () => {
     audio.click();
-    if (timeLeft === 0) setTimeLeft(30);
+    if (timeLeft === 0) return;
     setTimerRunning((running) => !running);
+  };
+
+  const revealTimedOutAnswer = () => {
+    if (timeLeft !== 0 || answerResolved) return;
+    audio.click();
+    setAnswerResolved(true);
+    audio.correct();
+  };
+
+  const useFifty = () => {
+    if (roundIndex !== 2 || !lifelines.fifty || answerResolved || timeLeft === 0) return;
+    audio.click();
+    setTimerRunning(false);
+    const wrong = [0, 1, 2, 3].filter((index) => index !== question.correct);
+    setHiddenAnswers(wrong.slice(0, 2));
+    setLifelines((current) => ({ ...current, fifty: false }));
+  };
+
+  const useAudience = () => {
+    if (roundIndex !== 2 || !lifelines.audience || answerResolved) return;
+    audio.click();
+    setTimerRunning(false);
+    setExternalHelpModal("audience");
+  };
+
+  const usePhone = () => {
+    if (roundIndex !== 2 || !lifelines.phone || answerResolved) return;
+    audio.click();
+    setTimerRunning(false);
+    setExternalHelpModal("phone");
+  };
+
+  const closeExternalHelp = () => {
+    if (!externalHelpModal) return;
+    audio.click();
+    setLifelines((current) => ({ ...current, [externalHelpModal]: false }));
+    setExternalHelpModal(null);
   };
 
   useEffect(() => {
@@ -660,7 +711,7 @@ function App() {
               <ul>
                 <li>Cả 6 người chơi cùng tham gia.</li>
                 <li>Trả lời đồng loạt 5 câu trắc nghiệm bằng thẻ A/B/C/D.</li>
-                <li>Mỗi câu có 10–15 giây suy nghĩ; trả lời sai không bị trừ.</li>
+                <li>Mỗi câu có 10 giây suy nghĩ; trả lời sai không bị trừ.</li>
                 <li>Sau 5 câu, 4 người có kết quả cao nhất đi tiếp.</li>
               </ul>
             </div>
@@ -751,16 +802,20 @@ function App() {
             <div className="bonus-optional-tag">CHỈ DÙNG KHI MC LỰA CHỌN</div>
           </div>
 
-          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 5 ? "danger" : ""}`}>
+          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 3 ? "danger" : ""}`}>
             <div className="timer-dial">
               <svg viewBox="0 0 72 72">
                 <circle className="timer-base" cx="36" cy="36" r="31" />
-                <circle className="timer-value" cx="36" cy="36" r="31" style={{ strokeDashoffset: 194.78 * (1 - timeLeft / 30) }} />
+                <circle className="timer-value" cx="36" cy="36" r="31" style={{ strokeDashoffset: 194.78 * (1 - timeLeft / TIMER_DURATION) }} />
               </svg>
               <div><strong>{timeLeft}</strong><span>GIÂY</span></div>
             </div>
             <div className="timer-copy"><span>THỜI GIAN TRẢ LỜI</span><strong>{timerRunning ? "Đang đếm ngược" : timeLeft === 0 ? "Hết giờ" : "Sẵn sàng"}</strong></div>
-            <button className="timer-main-button" onClick={toggleTimer}><Icon name={timerRunning ? "pause" : "play"} />{timerRunning ? "TẠM DỪNG" : timeLeft === 30 ? "BẮT ĐẦU" : "TIẾP TỤC"}</button>
+            {timeLeft > 0 ? (
+              <button className="timer-main-button" onClick={toggleTimer}><Icon name={timerRunning ? "pause" : "play"} />{timerRunning ? "TẠM DỪNG" : timeLeft === TIMER_DURATION ? "BẮT ĐẦU" : "TIẾP TỤC"}</button>
+            ) : (
+              <button className="timer-main-button reveal-timeout-button" onClick={revealTimedOutAnswer} disabled={answerResolved}><Icon name="eye" />{answerResolved ? "ĐÃ HIỆN ĐÁP ÁN" : "HIỂN THỊ ĐÁP ÁN"}</button>
+            )}
           </div>
 
           <div className={`question-display bonus-question ${bonusQuestion.image ? "with-image" : ""}`}>
@@ -787,7 +842,7 @@ function App() {
                 `}
                 key={answer}
                 onClick={() => selectBonusAnswer(index)}
-                disabled={answerResolved}
+                disabled={answerResolved || timeLeft === 0}
               >
                 <span>{LETTERS[index]}</span><p>{answer}</p>
                 {answerResolved && index === bonusQuestion.correct && <b>ĐÁP ÁN ĐÚNG</b>}
@@ -905,7 +960,7 @@ function App() {
             </div>
           </div>
 
-          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 5 ? "danger" : ""}`}>
+          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 3 ? "danger" : ""}`}>
             <div className="timer-dial">
               <svg viewBox="0 0 72 72">
                 <circle className="timer-base" cx="36" cy="36" r="31" />
@@ -914,7 +969,7 @@ function App() {
                   cx="36"
                   cy="36"
                   r="31"
-                  style={{ strokeDashoffset: 194.78 * (1 - timeLeft / 30) }}
+                  style={{ strokeDashoffset: 194.78 * (1 - timeLeft / TIMER_DURATION) }}
                 />
               </svg>
               <div><strong>{timeLeft}</strong><span>GIÂY</span></div>
@@ -923,10 +978,16 @@ function App() {
               <span>THỜI GIAN TRẢ LỜI</span>
               <strong>{timerRunning ? "Đang đếm ngược" : timeLeft === 0 ? "Hết giờ" : "Sẵn sàng"}</strong>
             </div>
-            <button className="timer-main-button" onClick={toggleTimer}>
-              <Icon name={timerRunning ? "pause" : "play"} />
-              {timerRunning ? "TẠM DỪNG" : timeLeft === 30 ? "BẮT ĐẦU" : "TIẾP TỤC"}
-            </button>
+            {timeLeft > 0 ? (
+              <button className="timer-main-button" onClick={toggleTimer}>
+                <Icon name={timerRunning ? "pause" : "play"} />
+                {timerRunning ? "TẠM DỪNG" : timeLeft === TIMER_DURATION ? "BẮT ĐẦU" : "TIẾP TỤC"}
+              </button>
+            ) : (
+              <button className="timer-main-button reveal-timeout-button" onClick={revealTimedOutAnswer} disabled={answerResolved}>
+                <Icon name="eye" />{answerResolved ? "ĐÃ HIỆN ĐÁP ÁN" : "HIỂN THỊ ĐÁP ÁN"}
+              </button>
+            )}
           </div>
 
           <div className={`question-display ${question.image ? "with-image" : ""}`} key={`${roundIndex}-${questionIndex}`}>
@@ -942,8 +1003,9 @@ function App() {
                 <i />
                 <small>05</small>
               </div>
-              {question.context && <div className="case-context">{question.context}</div>}
+              {question.context && !question.contextBelow && <div className="case-context">{question.context}</div>}
               <h1>{question.text}</h1>
+              {question.context && question.contextBelow && <div className="case-context context-below">{question.context}</div>}
             </div>
           </div>
 
@@ -951,6 +1013,7 @@ function App() {
             {question.answers.map((answer, index) => (
               <button
                 className={`static-answer
+                  ${hiddenAnswers.includes(index) ? "lifeline-hidden" : ""}
                   ${answerResolved && index === question.correct ? "correct" : ""}
                   ${answerResolved && selectedAnswer === index && index !== question.correct ? "wrong" : ""}
                   ${answerResolved && index !== question.correct && selectedAnswer !== index ? "dimmed" : ""}
@@ -958,7 +1021,7 @@ function App() {
                 `}
                 key={answer}
                 onClick={() => selectAnswer(index)}
-                disabled={answerResolved}
+                disabled={answerResolved || timeLeft === 0 || hiddenAnswers.includes(index)}
               >
                 <span>{LETTERS[index]}</span>
                 <p>{answer}</p>
@@ -981,6 +1044,20 @@ function App() {
             <div className="ladder-heading">
               <span>THÁP CHUNG KẾT</span>
               <strong>MỨC ĐIỂM</strong>
+            </div>
+            <div className="final-lifelines">
+              <span className="lifeline-title">QUYỀN TRỢ GIÚP</span>
+              <div className="final-lifeline-grid">
+                <button className={!lifelines.fifty ? "used" : ""} onClick={useFifty} disabled={!lifelines.fifty || answerResolved || timeLeft === 0}>
+                  <strong>50:50</strong><span>Loại 2 đáp án sai</span>
+                </button>
+                <button className={!lifelines.audience ? "used" : ""} onClick={useAudience} disabled={!lifelines.audience || answerResolved}>
+                  <Icon name="users" /><span>Hỏi khán giả</span>
+                </button>
+                <button className={!lifelines.phone ? "used" : ""} onClick={usePhone} disabled={!lifelines.phone || answerResolved}>
+                  <Icon name="phone" /><span>Hỏi người thân</span>
+                </button>
+              </div>
             </div>
             <div className="duel">
               <div><span>ĐẤU THỦ 01</span><strong></strong></div>
@@ -1008,6 +1085,20 @@ function App() {
           </aside>
         )}
       </div>
+
+      {externalHelpModal && (
+        <div className="external-help-backdrop">
+          <section className="external-help-board">
+            <button className="external-help-close" onClick={closeExternalHelp} aria-label="Đóng bảng trợ giúp"><Icon name="close" /></button>
+            <div className="external-help-icon"><Icon name={externalHelpModal === "audience" ? "users" : "phone"} /></div>
+            <span>QUYỀN TRỢ GIÚP</span>
+            <h2>{externalHelpModal === "audience" ? "Hỏi ý kiến khán giả" : "Hỏi ý kiến người thân"}</h2>
+            <p>{externalHelpModal === "audience" ? "Mời khán giả trong lớp đưa ra lựa chọn." : "Mời người chơi tham khảo ý kiến người thân."}</p>
+            <button className="external-help-done" onClick={closeExternalHelp}>KẾT THÚC TRỢ GIÚP</button>
+          </section>
+        </div>
+      )}
+
     </main>
   );
 }
