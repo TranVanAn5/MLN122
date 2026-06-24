@@ -10,54 +10,54 @@ const ROUNDS = [
     icon: "◆",
     questions: [
       {
-        text: "Theo học thuyết Kinh tế chính trị của C. Marx, nguồn gốc duy nhất tạo ra giá trị thặng dư trong quá trình sản xuất là gì?",
+        text: "Khi nhà tư bản tăng năng suất lao động xã hội để rút ngắn thời gian lao động tất yếu, họ đang sản xuất loại giá trị thặng dư nào?",
         answers: [
-          "Do máy móc hiện đại và công nghệ tiên tiến vận hành.",
-          "Do tài quản lý và sự nhạy bén của nhà tư bản.",
-          "Do lao động sống của người công nhân (người lao động làm thuê).",
-          "Do sự chênh lệch giá cả khi mua rẻ bán đắt trên thị trường.",
+          "Giá trị thặng dư tuyệt đối.",
+          "Giá trị thặng dư tương đối.",
+          "Giá trị thặng dư siêu ngạch.",
+          "Lợi nhuận thương nghiệp.",
+        ],
+        correct: 1,
+      },
+      {
+        text: "Theo C. Marx, sự khác biệt cốt lõi giữa Tư bản bất biến (c) và Tư bản khả biến (v) là gì?",
+        answers: [
+          "(c) sinh lợi nhuận trong lưu thông, còn (v) sinh lợi nhuận trong sản xuất.",
+          "(c) tạo toàn bộ giá trị thặng dư, còn (v) chỉ phân phối lại tài sản.",
+          "(c) là sức lao động, còn (v) là máy móc và thiết bị.",
+          "(c) chuyển giá trị cũ vào sản phẩm, còn (v) tạo giá trị mới và giá trị thặng dư.",
+        ],
+        correct: 3,
+      },
+      {
+        text: "Một doanh nghiệp dùng AI để giảm một nửa số lao động nhưng doanh thu vẫn giữ nguyên. Theo Marx, AI là gì?",
+        answers: [
+          "Tư bản khả biến.",
+          "Giá trị thặng dư.",
+          "Tư bản bất biến.",
+          "Lao động sống.",
         ],
         correct: 2,
       },
       {
-        text: "Lợi tức (tiền lãi cho vay) có nguồn gốc từ đâu?",
+        text: "Trong công thức G = c + (v + m), phần “m” do bộ phận nào tạo ra và thuộc quyền sở hữu của ai?",
         answers: [
-          "Lao động của người cho vay.",
-          "Một phần giá trị thặng dư do tư bản đi vay tạo ra, chia lại cho tư bản cho vay.",
-          "Giá trị sử dụng của tiền.",
-          "Chi phí lưu thông.",
+          "Do thuật toán AI sinh ra và được chia đều cho cộng đồng.",
+          "Do lao động sống tạo ra trong sản xuất và bị nhà tư bản chiếm hữu.",
+          "Do sự khan hiếm hàng hóa tạo ra và nộp vào quỹ dự phòng chung.",
+          "Do khấu hao máy móc tạo ra và được tái đầu tư vào nền tảng.",
         ],
         correct: 1,
       },
       {
-        text: "Địa tô (tiền thuê đất) về bản chất là gì?",
+        text: "Trong mô hình mạng xã hội TikTok, yếu tố “Tư bản khả biến” (v) có đặc điểm nào giúp nền tảng thu được thặng dư khổng lồ?",
         answers: [
-          "Giá cả đất đai.",
-          "Phần giá trị thặng dư nhà tư bản nông nghiệp nộp cho địa chủ.",
-          "Chi phí sản xuất nông nghiệp.",
-          "Giá trị sử dụng của đất.",
+          "(v) luôn được duy trì ở mức lương tối thiểu vùng.",
+          "(v) tăng theo số video, buộc nền tảng liên tục trả lương cho nhà sáng tạo.",
+          "(v) được quy đổi thành cổ phần nội bộ cho người dùng mới.",
+          "(v) gần như bằng 0 vì ranh giới giữa lao động tạo giá trị và giải trí bị xóa nhòa.",
         ],
-        correct: 1,
-      },
-      {
-        text: "Điểm chung của hai phương pháp sản xuất giá trị thặng dư tuyệt đối và giá trị thặng dư tương đối là gì?",
-        answers: [
-          "Đều tăng tiền lương cho người lao động.",
-          "Đều kéo dài thời gian nghỉ ngơi của công nhân.",
-          "Đều tăng tỷ suất bóc lột, tối đa hóa giá trị thặng dư thu về.",
-          "Đều giảm bớt cường độ lao động của công nhân.",
-        ],
-        correct: 2,
-      },
-      {
-        text: "Vì sao Marx gọi bộ phận tiền lương trả cho người lao động (V) là “Tư bản khả biến”?",
-        answers: [
-          "Vì số tiền lương này có thể biến mất nếu doanh nghiệp phá sản.",
-          "Vì thông qua lao động, giá trị của nó tăng lên và trực tiếp tạo ra giá trị thặng dư.",
-          "Vì nó biến đổi liên tục theo giá nguyên vật liệu trên thị trường.",
-          "Vì nhà tư bản có thể tùy ý thay đổi mức lương này hàng ngày.",
-        ],
-        correct: 1,
+        correct: 3,
       },
     ],
   },
@@ -70,46 +70,57 @@ const ROUNDS = [
     icon: "◈",
     questions: [
       {
-        text: "Thu nhập của người chạy xe công nghệ phản ánh điều gì?",
-        context: "Tình huống: Sinh viên chạy Grab để có thêm thu nhập.",
+        text: "Dưới góc nhìn Marxist, Shopee đã xử lý bộ phận “Tư bản bất biến” như thế nào để tối ưu hóa thặng dư?",
+        context: "Tư bản bất biến gồm kho bãi, hàng hóa và công cụ đóng gói.",
+        answers: [
+          "Thâu tóm toàn bộ kho bãi để trực tiếp kiểm soát rủi ro.",
+          "Chia sẻ rủi ro hao mòn tài sản với người bán qua quỹ dự phòng.",
+          "Khấu hao toàn bộ tài sản vật lý bằng số hóa hệ thống 100%.",
+          "Đẩy rủi ro tồn kho và hao mòn thiết bị sang người bán hàng.",
+        ],
+        correct: 3,
+      },
+      {
+        text: "Để duy trì mức thu nhập cũ, một tài xế công nghệ phải kéo dài thời gian làm việc từ 8 giờ lên 12 giờ mỗi ngày. Hiện tượng này phản ánh điều gì?",
         image: "/images/grab-driver.jpg",
         imageAlt: "Tài xế xe ôm công nghệ Grab đang chở khách trên đường",
         answers: [
-          "Lợi nhuận thương nghiệp thuần túy.",
-          "Quan hệ phân chia giá trị giữa nền tảng giữ phần trăm hoa hồng và người lao động trực tiếp.",
-          "Địa tô.",
-          "Lợi tức cổ phần.",
+          "Tăng cường độ lao động để bù đắp giá trị.",
+          "Tăng năng suất lao động nhờ cải tiến công cụ.",
+          "Mở rộng quy mô tư bản bất biến.",
+          "Gia tăng giá trị sử dụng của sức lao động.",
+        ],
+        correct: 0,
+      },
+      {
+        text: "Sự trỗi dậy của các nền tảng lao động tự do (Freelance) đã làm thay đổi hình thức bán “sức lao động” như thế nào?",
+        answers: [
+          "Trao quyền làm chủ tư liệu sản xuất số cho lao động tự do.",
+          "Chuyển từ bán sức lao động trọn gói sang bán theo từng đơn vị nhỏ.",
+          "Đóng gói sức lao động thành tệp dữ liệu để bán cho nhãn hàng.",
+          "Chuyển lao động sống thành tư bản bất biến nhờ thuật toán.",
         ],
         correct: 1,
       },
       {
-        text: "Một chủ shop mua chiếc áo với giá 120.000 đồng từ xưởng và bán lại với giá 180.000 đồng. Khoản chênh lệch chủ yếu là gì?",
-        answers: ["Địa tô.", "Lợi tức.", "Lợi nhuận thương nghiệp.", "Thuế."],
-        correct: 2,
-      },
-      {
-        text: "Tài xế Grab bị ứng dụng khấu trừ 30% thu nhập mỗi chuyến xe dưới dạng “phí dịch vụ”. Về bản chất, khoản này biểu hiện yếu tố nào?",
+        text: "Với hơn 2,5 triệu người tham gia affiliate, mô hình này phản ánh hệ quả nào nổi bật của kinh tế số?",
         answers: [
-          "Tiền thưởng từ sàn công nghệ.",
-          "Chi phí hao mòn xe máy.",
-          "Giá trị thặng dư bị nền tảng chiếm đoạt.",
-          "Tiền bảo hiểm tai nạn cho tài xế.",
+          "Doanh thu tập trung vào một số nền tảng lớn.",
+          "Hoa hồng tập trung vào nhóm dẫn đầu.",
+          "Cạnh tranh gia tăng giữa các nhà bán hàng.",
+          "Người tham gia phụ thuộc vào thuật toán.",
         ],
-        correct: 2,
+        correct: 1,
       },
       {
-        text: "Một doanh nghiệp giày thuê công nhân làm 8 giờ mỗi ngày. Sau khi trừ mọi chi phí, doanh nghiệp vẫn thu khoản tiền đáng kể. Theo Marx, nguồn gốc sâu xa đến từ đâu?",
+        text: "Hãy sắp xếp đúng trình tự “Quy trình giăng bẫy bóc lột” của các nhà tư bản nền tảng.",
+        context: "(1) Hạ rào cản gia nhập; (2) Ép lao động tự bóc lột; (3) Thâu tóm thuật toán lõi; (4) Đơn phương đổi chính sách.",
         answers: [
-          "Máy móc.",
-          "Giá bán cao.",
-          "Lao động tạo ra giá trị thặng dư.",
-          "Quảng cáo.",
+          "(1) → (3) → (4) → (2).",
+          "(3) → (4) → (1) → (2).",
+          "(3) → (1) → (4) → (2).",
+          "(1) → (4) → (2) → (3).",
         ],
-        correct: 2,
-      },
-      {
-        text: "Một người không trực tiếp sản xuất hay kinh doanh nhưng góp vốn vào công ty và cuối năm nhận phần chia lợi nhuận. Thu nhập đó là hình thức nào của giá trị thặng dư?",
-        answers: ["Địa tô.", "Lợi nhuận thương nghiệp.", "Lợi tức.", "Tiền lương."],
         correct: 2,
       },
     ],
@@ -123,46 +134,73 @@ const ROUNDS = [
     icon: "✦",
     questions: [
       {
-        text: "Một công ty dùng AI thay thế 70% nhân viên chăm sóc khách hàng. Sau một năm, doanh thu tăng 20%, chi phí nhân công giảm mạnh. Nhận định nào phù hợp nhất với lý luận Marx?",
+        text: "Khoản nào sau đây KHÔNG trực tiếp tạo ra giá trị mới?",
         answers: [
-          "AI là nguồn tạo ra giá trị thặng dư mới.",
-          "AI giúp doanh nghiệp giảm chi phí và tăng khả năng thu giá trị thặng dư.",
-          "Giá trị thặng dư không còn phụ thuộc vào lao động.",
+          "Công nhân vận hành máy.",
+          "Shipper giao hàng.",
+          "Content Creator làm video.",
+          "Máy chủ TikTok.",
+        ],
+        correct: 3,
+      },
+      {
+        text: "Doanh nghiệp X dùng AI cắt giảm 30% lao động, lợi nhuận tăng mạnh và cổ tức tăng 50%. Theo Marx, cách giải thích nào phù hợp nhất?",
+        answers: [
+          "AI tăng năng suất nên toàn bộ lợi ích tăng được chuyển cho cổ đông.",
+          "AI giảm chi phí lao động, làm phần giá trị giữ lại tăng lên.",
+          "Giá dịch vụ tăng là nguyên nhân giúp doanh nghiệp có nhiều lợi nhuận.",
+          "Hiệu quả tăng chỉ nhờ kết hợp công nghệ và lao động còn lại.",
+        ],
+        correct: 1,
+      },
+      {
+        text: "Một doanh nghiệp dùng AI, cắt giảm 40% lao động, tăng lợi nhuận 60% trong khi doanh thu gần như không đổi. Theo Marx, kết luận nào đúng nhất?",
+        answers: [
+          "AI trực tiếp tạo ra giá trị thặng dư.",
           "AI làm học thuyết giá trị thặng dư không còn đúng.",
+          "AI giúp tăng khả năng khai thác lao động sống.",
+          "AI biến mọi lao động thành tư bản.",
         ],
-        correct: 1,
+        correct: 2,
       },
       {
-        text: "Doanh nghiệp X dùng AI cắt 30% nhân sự, tăng giá dịch vụ và cổ tức tăng 50%. Phân tích nào đúng nhất?",
+        text: "Một Content Creator nói: “Tôi tự quay, tự dựng, tự đăng video nên tôi là chủ tư liệu sản xuất.” Theo Marx, nhận định nào hợp lý nhất?",
         answers: [
-          "Lợi nhuận tăng hoàn toàn do AI tự thân tạo giá trị.",
-          "Giá trị thặng dư tăng nhờ năng suất lao động và cắt chi phí lao động sống, sau đó được chia lại cho cổ đông.",
-          "Đây là hiện tượng ngẫu nhiên, không thể giải thích.",
-          "Tăng giá dịch vụ là nguyên nhân duy nhất.",
+          "Đúng hoàn toàn vì người đó sở hữu điện thoại và máy tính.",
+          "Sai vì người đó không sở hữu nền tảng phân phối.",
+          "Đúng vì không tồn tại quan hệ tư bản.",
+          "Không thể kết luận dựa trên thông tin trên.",
         ],
         correct: 1,
       },
       {
-        text: "Hoàn thành nhận định: “Máy móc và AI có thể thay thế nhiều công việc, nhưng theo Marx, nguồn gốc cuối cùng tạo ra ______ vẫn là lao động sống.”",
-        answers: ["Tiền lương.", "Giá trị thặng dư.", "Giá cả.", "Thuế."],
-        correct: 1,
-      },
-      {
-        text: "Một khoản giá trị thặng dư trải qua các bước: (1) chia thành lợi tức; (2) người lao động tạo giá trị mới; (3) giá trị thặng dư xuất hiện trong sản xuất; (4) biểu hiện thành lợi nhuận khi hàng hóa được bán. Thứ tự đúng là?",
-        answers: ["2 → 3 → 4 → 1", "2 → 4 → 3 → 1", "3 → 2 → 4 → 1", "4 → 2 → 3 → 1"],
-        correct: 0,
-      },
-      {
-        text: "Một startup AI bán phần mềm, cho thuê văn phòng dư thừa và đầu tư trái phiếu doanh nghiệp. Thứ tự các hình thức biểu hiện của giá trị thặng dư là?",
+        text: "Một doanh nhân mở chuỗi cà phê, cho thuê mặt bằng, đầu tư trái phiếu và nhận cổ tức. Thứ tự các hình thức biểu hiện của giá trị thặng dư là gì?",
         answers: [
-          "Lợi nhuận – Địa tô – Lợi tức.",
-          "Địa tô – Lợi nhuận – Lợi tức.",
-          "Lợi tức – Địa tô – Lợi nhuận.",
-          "Lợi nhuận – Lợi tức – Địa tô.",
+          "Lợi nhuận – Địa tô – Lợi tức – Lợi tức.",
+          "Lợi nhuận thương nghiệp – Địa tô – Lợi tức – Lợi tức.",
+          "Lợi nhuận thương nghiệp – Địa tô – Lợi nhuận – Lợi tức.",
+          "Lợi nhuận – Địa tô – Lợi nhuận thương nghiệp – Lợi tức.",
         ],
-        correct: 0,
+        correct: 1,
       },
     ],
+  },
+];
+
+const BONUS_QUESTIONS = [
+  {
+    source: "VÒNG 01 · LÝ THUYẾT",
+    text: "Nhân vật có vai trò trung tâm trong việc xây dựng học thuyết giá trị thặng dư là ai?",
+    image: "/images/karl-marx.jpg",
+    imageAlt: "Chân dung Karl Marx",
+    answers: ["Adam Smith.", "Friedrich Engels.", "Karl Marx.", "Vladimir Lenin."],
+    correct: 2,
+  },
+  {
+    source: "VÒNG 02 · THỰC TIỄN",
+    text: "Triết gia nào được Marx kế thừa nhiều quan điểm về giá trị lao động khi xây dựng học thuyết giá trị thặng dư?",
+    answers: ["Adam Smith.", "David Ricardo.", "Montesquieu.", "Auguste Comte."],
+    correct: 1,
   },
 ];
 
@@ -322,6 +360,17 @@ function useArenaAudio(enabled) {
     navigate: () => { tone(330, .09, 0, "sine", .04); tone(495, .13, .07, "sine", .035); },
     correct: () => [523, 659, 784, 1047].forEach((note, index) => tone(note, .34, index * .1, "sine", .07)),
     wrong: () => { tone(220, .55, 0, "sawtooth", .045); tone(147, .75, .18, "sawtooth", .04); },
+    timeUp: () => {
+      Array.from({ length: 22 }, (_, index) => index * .125).forEach((delay, index) => {
+        const fade = 1 - index / 32;
+        const highBell = index % 2 === 0;
+        const strike = highBell ? 1850 : 1420;
+        tone(strike, .18, delay, "square", .052 * fade, strike * .92);
+        tone(strike * 1.48, .12, delay + .008, "sine", .036 * fade, strike * 1.3);
+        tone(strike * .52, .24, delay + .012, "triangle", .028 * fade, strike * .45);
+      });
+      tone(980, .75, 2.65, "triangle", .025, 620);
+    },
     defeat: () => {
       tone(246.94, 1.3, 0, "sawtooth", .055, 123.47);
       tone(185, 1.65, .25, "triangle", .06, 82.41);
@@ -352,12 +401,15 @@ function App() {
   const [result, setResult] = useState(null);
   const [timeLeft, setTimeLeft] = useState(30);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [bonusIndex, setBonusIndex] = useState(0);
+  const [bonusReturnRound, setBonusReturnRound] = useState(1);
   const resultTimerRef = useRef(null);
   const resultSoundPlayedRef = useRef(false);
   const audio = useArenaAudio(soundOn);
 
   const round = ROUNDS[roundIndex];
   const question = round.questions[questionIndex];
+  const bonusQuestion = BONUS_QUESTIONS[bonusIndex];
 
   const openRound = (index) => {
     audio.click();
@@ -449,6 +501,35 @@ function App() {
     setView("rules");
   };
 
+  const openBonus = (completedRound) => {
+    audio.click();
+    audio.startMusic();
+    setBonusIndex(completedRound - 1);
+    setBonusReturnRound(completedRound);
+    resultSoundPlayedRef.current = false;
+    setSelectedAnswer(null);
+    setAnswerResolved(false);
+    setTimeLeft(30);
+    setTimerRunning(false);
+    setView("bonus");
+  };
+
+  const selectBonusAnswer = (index) => {
+    if (answerResolved) return;
+    audio.click();
+    setTimerRunning(false);
+    setSelectedAnswer(index);
+    setAnswerResolved(true);
+    if (index === bonusQuestion.correct) audio.correct();
+    else audio.wrong();
+  };
+
+  const finishBonus = () => {
+    audio.stopMusic();
+    setResult({ type: "bonus-complete", round: bonusReturnRound });
+    setView("result");
+  };
+
   useEffect(() => {
     const onKeyDown = (event) => {
       if (view !== "round") return;
@@ -465,10 +546,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!timerRunning || view !== "round") return undefined;
+    if (!timerRunning || !["round", "bonus"].includes(view)) return undefined;
     if (timeLeft <= 0) {
       setTimerRunning(false);
-      audio.wrong();
+      audio.timeUp();
       return undefined;
     }
     const timer = setTimeout(() => setTimeLeft((time) => time - 1), 1000);
@@ -482,14 +563,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (soundOn && view === "round") audio.startMusic();
+    if (soundOn && (view === "round" || view === "bonus")) audio.startMusic();
     if (soundOn && (view === "home" || view === "rules")) audio.startHomeMusic();
   }, [soundOn, view]);
 
   useEffect(() => {
     const unlockAudio = () => {
       if (!soundOn) return;
-      if (view === "round") audio.startMusic();
+      if (view === "round" || view === "bonus") audio.startMusic();
       if (view === "home" || view === "rules") audio.startHomeMusic();
     };
     window.addEventListener("pointerdown", unlockAudio, { once: true });
@@ -506,7 +587,8 @@ function App() {
 
   if (view === "result") {
     const winner = result?.type === "winner";
-    const roundComplete = result?.type === "round-complete";
+    const roundComplete = ["round-complete", "bonus-complete"].includes(result?.type);
+    const bonusComplete = result?.type === "bonus-complete";
     return (
       <main className={`arena-shell result-view ${winner ? "winner" : ""}`}>
         <Background />
@@ -517,11 +599,11 @@ function App() {
           <Brand />
           <div className="result-emblem">{winner ? "✦" : roundComplete ? "✓" : "◆"}</div>
           <span className="result-overline">
-            {winner ? "CHINH PHỤC HOÀN TOÀN" : roundComplete ? `HOÀN THÀNH VÒNG ${result.round}` : "KẾT QUẢ CHUNG KẾT"}
+            {winner ? "CHINH PHỤC HOÀN TOÀN" : bonusComplete ? "HOÀN THÀNH CÂU HỎI PHỤ" : roundComplete ? `HOÀN THÀNH VÒNG ${result.round}` : "KẾT QUẢ CHUNG KẾT"}
           </span>
-          <h1>{winner ? "Nhà vô địch!" : roundComplete ? "Vòng đấu kết thúc" : "Dừng chân tại đây"}</h1>
+          <h1>{winner ? "Nhà vô địch!" : bonusComplete ? "Sẵn sàng đi tiếp" : roundComplete ? "Vòng đấu kết thúc" : "Dừng chân tại đây"}</h1>
           {roundComplete ? (
-            <p>Phần trình chiếu của vòng đấu đã hoàn tất.</p>
+            <p>{bonusComplete ? "Câu hỏi phụ đã hoàn tất. Tiếp tục đến vòng đấu kế tiếp." : "Phần trình chiếu của vòng đấu đã hoàn tất."}</p>
           ) : (
             <>
               <p>Mức điểm người chơi đạt được</p>
@@ -529,6 +611,11 @@ function App() {
             </>
           )}
           <div className="result-actions">
+            {result?.type === "round-complete" && result.round <= BONUS_QUESTIONS.length && (
+              <button className="bonus-result-button" onClick={() => openBonus(result.round)}>
+                <span>★</span> CÂU HỎI PHỤ · OPTIONAL
+              </button>
+            )}
             {roundComplete && result.round < 3 && (
               <button className="primary-result" onClick={() => openRound(result.round)}>SANG VÒNG {result.round + 1} <Icon name="arrow" /></button>
             )}
@@ -638,6 +725,78 @@ function App() {
           <p>MC điều phối câu hỏi và xác nhận đáp án. Thư ký cập nhật kết quả thực tế bên ngoài giao diện.</p>
           <button onClick={goHome}><Icon name="back" /> ĐÃ HIỂU · VỀ TRANG CHỦ</button>
         </footer>
+      </main>
+    );
+  }
+
+  if (view === "bonus") {
+    return (
+      <main className="arena-shell question-view bonus-view" style={{ "--accent": "#f5c96b" }}>
+        <Background />
+        <header className="question-header bonus-header">
+          <button className="icon-button" onClick={goHome} aria-label="Về trang chủ"><Icon name="home" /></button>
+          <Brand small />
+          <div className="bonus-header-title">
+            <span>OPTIONAL</span>
+            <strong>CÂU HỎI PHỤ</strong>
+          </div>
+          <div className="header-tools">
+            <button onClick={() => setSoundOn((value) => !value)} aria-label="Bật tắt âm thanh"><Icon name={soundOn ? "volume" : "mute"} /></button>
+          </div>
+        </header>
+
+        <section className="question-stage bonus-stage">
+          <div className="round-context">
+            <div><span>{bonusQuestion.source}</span><strong>CÂU HỎI PHỤ · OPTIONAL</strong></div>
+            <div className="bonus-optional-tag">CHỈ DÙNG KHI MC LỰA CHỌN</div>
+          </div>
+
+          <div className={`question-timer ${timerRunning ? "running" : ""} ${timeLeft <= 5 ? "danger" : ""}`}>
+            <div className="timer-dial">
+              <svg viewBox="0 0 72 72">
+                <circle className="timer-base" cx="36" cy="36" r="31" />
+                <circle className="timer-value" cx="36" cy="36" r="31" style={{ strokeDashoffset: 194.78 * (1 - timeLeft / 30) }} />
+              </svg>
+              <div><strong>{timeLeft}</strong><span>GIÂY</span></div>
+            </div>
+            <div className="timer-copy"><span>THỜI GIAN TRẢ LỜI</span><strong>{timerRunning ? "Đang đếm ngược" : timeLeft === 0 ? "Hết giờ" : "Sẵn sàng"}</strong></div>
+            <button className="timer-main-button" onClick={toggleTimer}><Icon name={timerRunning ? "pause" : "play"} />{timerRunning ? "TẠM DỪNG" : timeLeft === 30 ? "BẮT ĐẦU" : "TIẾP TỤC"}</button>
+          </div>
+
+          <div className={`question-display bonus-question ${bonusQuestion.image ? "with-image" : ""}`}>
+            {bonusQuestion.image && (
+              <figure className="question-illustration portrait-illustration">
+                <img src={bonusQuestion.image} alt={bonusQuestion.imageAlt} />
+                <figcaption>NHÂN VẬT LỊCH SỬ</figcaption>
+              </figure>
+            )}
+            <div className="question-copy">
+              <div className="question-meta"><span>CÂU PHỤ {String(bonusIndex + 1).padStart(2, "0")}</span><i /><small>OPTIONAL</small></div>
+              <h1>{bonusQuestion.text}</h1>
+            </div>
+          </div>
+
+          <div className="answer-options">
+            {bonusQuestion.answers.map((answer, index) => (
+              <button
+                className={`static-answer
+                  ${answerResolved && index === bonusQuestion.correct ? "correct" : ""}
+                  ${answerResolved && selectedAnswer === index && index !== bonusQuestion.correct ? "wrong" : ""}
+                  ${answerResolved && index !== bonusQuestion.correct && selectedAnswer !== index ? "dimmed" : ""}
+                  ${answerResolved && selectedAnswer === index && index === bonusQuestion.correct ? "correct-flash" : ""}
+                `}
+                key={answer}
+                onClick={() => selectBonusAnswer(index)}
+                disabled={answerResolved}
+              >
+                <span>{LETTERS[index]}</span><p>{answer}</p>
+                {answerResolved && index === bonusQuestion.correct && <b>ĐÁP ÁN ĐÚNG</b>}
+              </button>
+            ))}
+          </div>
+
+          <button className="end-round-button bonus-finish-button" onClick={finishBonus}><Icon name="flag" /> KẾT THÚC CÂU HỎI PHỤ</button>
+        </section>
       </main>
     );
   }
